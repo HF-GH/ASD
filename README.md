@@ -8,7 +8,7 @@
 *******************************************************************************************************************************
 For plotting psychometric curves for each participant (and experimental condition):
 
-1. download and install the psignifit4 toolbox (from: https://github.com/wichmann-lab/psignifit)\n
+1. download and install the psignifit4 toolbox (from: https://github.com/wichmann-lab/psignifit)
 	and make sure it is included in the Matlab path
 2. download code: "plot_psych_curves_loc_task.m"
 3. download data: "loc_summ_data4PSE"
@@ -36,9 +36,9 @@ Each group includes separate fields for each participant,
 which contain the summarized information needed for calculating the psychometric curves. 
 Each participant has two fields - left_priors and right_priors. 
 Each of them contains a matrix with three columns: 
-(1) stimulus intensity (stimulus location in degrees)
-(2) the number of rightward choices (for the specific intensity)
-(3) the number of trials that included this intensity choices.
+1. stimulus intensity (stimulus location in degrees)
+2. the number of rightward choices (for the specific intensity)
+3. the number of trials that included this intensity choices.
 
 The code uses psignifit4 functions to calculate and plot the psychometric curves (the psignifit4 toolbox needs to be downloaded and included in the Matlab path).
 
@@ -50,16 +50,16 @@ The data is organized as structure with two fields, one for each experimental co
 Each of them includes two additional fields, one for each group (asd and control). 
 
 Each group includes separate fields for each participant, which contain a table with several columns: 
-(1) loc_deg (stimulus location in degrees)
-(2) prior_type (priors' type, such that right priors are coded as "1" and left priors as "-1")
-(3)stim_num (stimulus number within a specific trial: 
+1. loc_deg (stimulus location in degrees)
+2. prior_type (priors' type, such that right priors are coded as "1" and left priors as "-1")
+3. stim_num (stimulus number within a specific trial: 
 	the test stimulus is coded as "0", the preceding prior as "1", the one before that as "2", etc.)
-(4) test_stim (test stim are coded as "1" and priors are coded as "0")
-(5) ans (participant's response; "right" is coded as "1" and "left" is % coded as "-1"
-(6) corr (was the response correct or not; correct responses are coded as "1" and incorrect as "0")
-(7) rt (response time in seconds). 
+4. test_stim (test stim are coded as "1" and priors are coded as "0")
+5. ans (participant's response; "right" is coded as "1" and "left" is % coded as "-1"
+6. corr (was the response correct or not; correct responses are coded as "1" and incorrect as "0")
+7. rt (response time in seconds). 
 The response invariant condition table includes an additional column:
-(8) prior_color (priors were either green or purple, coded as "1" and "2", counterbalanced between participants. 
+8. prior_color (priors were either green or purple, coded as "1" and "2", counterbalanced between participants. 
 	Test circles were always white, and their color is coded as "0").
 
 The PSE calculation is done using the psignifit4 toolbox (which needs to be downloaded and included in the Matlab path).
