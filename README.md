@@ -75,13 +75,16 @@ Similarly, 5-back model perceptual decision model coefficients an be found under
 field in the results file,	such that: 
 1. general bias
 2. current stimulus
+
 3-8. 1-5 (the number of steps back) prev. choices, respectively
+
 9-12. 1-5 prev. stim, respectively. 
 
 The coefficients of the additional 5-back model perceptual decision model that includes only prev. choices (and not prev. stimuli) 
 can be found under the 'decision_model_5_choices_coeff' field in the results file, such that: 
 1. general bias
 2. current stimulus
+
 3-8. 1-5 (the number of steps back) prev. choices respectively.
 *******************************************************************************************************************************
 
