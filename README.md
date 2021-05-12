@@ -57,7 +57,7 @@ Each group includes separate fields for each participant, which contain a table 
 (4) test_stim (test stim are coded as "1" and priors are coded as "0")
 (5) ans (participant's response; "right" is coded as "1" and "left" is % coded as "-1"
 (6) corr (was the response correct or not; correct responses are coded as "1" and incorrect as "0")
-(7)rt (response time in seconds). 
+(7) rt (response time in seconds). 
 The response invariant condition table includes an additional column:
 (8) prior_color (priors were either green or purple, coded as "1" and "2", counterbalanced between participants. 
 	Test circles were always white, and their color is coded as "0").
