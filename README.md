@@ -8,7 +8,7 @@
 *******************************************************************************************************************************
 For plotting psychometric curves for each participant (and experimental condition):
 
-1. download and install the psignifit4 toolbox (from: https://github.com/wichmann-lab/psignifit)
+1. download and install the psignifit4 toolbox (from: https://github.com/wichmann-lab/psignifit)\n
 	and make sure it is included in the Matlab path
 2. download code: "plot_psych_curves_loc_task.m"
 3. download data: "loc_summ_data4PSE"
