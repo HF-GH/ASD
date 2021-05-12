@@ -1,41 +1,41 @@
 
 clc;clear;
-
+ 
 load('loc_data');
-
+ 
 %-------------------------------------------------------------------------%
-% The data is organized as structure with two fileds, one for each 
+% The data is organized as structure with two fields, one for each 
 % experimental condition (primary and response invariant). 
-% Each of them includes two additional fileds, one for each group (asd and control). 
-% Each group includes separate feilds for each participant, which contain a table 
-% with several columns: (1) loc_deg (stimulus location in degrees),(2) prior_type 
+% Each of them includes two additional fields, one for each group (asd and control). 
+% Each group includes separate fields for each participant, which contain a table 
+% with several columns: (1) loc_deg (stimulus location in degrees), (2) prior_type 
 % (priors' type, such that right priors are coded as "1" and left priors 
 % as "-1"), (3)stim_num (stimulus number within a specific trial: the test stimulus
-% is coded as "0", the preceeding prior as "1", the one before that as "2", etc.), 
+% is coded as "0", the preceding prior as "1", the one before that as "2", etc.), 
 % (4) test_stim (test stim are coded as "1" and priors are coded as "0"), 
 % (5) ans (participant's response; "right" is coded as "1" and "left" is
 % coded as "-1", (6) corr (was the response correct or not; 
 % correct responses are coded as "1" and incorrect as "0"),(7)rt (response time in seconds). 
-% The response invariant condition table includes an additionl column (8) prior_color 
+% The response invariant condition table includes an additional column (8) prior_color 
 % (priors were either green or purple, coded as "1" and "2", counterbalanced between participants.
 % Test circles were always white, and their color is coded as "0").
 % The PSE calculation is done using the psignifit4 toolbox 
-% (which needs to be downloaded and included in the matlab path).
+% (which needs to be downloaded and included in the Matlab path).
 % Perceptual decision model coefficients can be found under the
-% 'decision_model_coeff' feild in the results file, such that: (1) general
+% 'decision_model_coeff' field in the results file, such that: (1) general
 % bias, (2) current stimulus, (3) prev. choices and (4) prev. stim.
-% Similarly, 5-back model perceptual decision model coefficients an be 
-% found under the 'decision_model_5_back_coeff' feild in the results file, 
+% Similarly, 5-back model perceptual decision model coefficients can be 
+% found under the 'decision_model_5_back_coeff' field in the results file, 
 % such that: (1) general % bias, (2) current stimulus, % (3-8) 1-5 prev. 
 % choices, respectively and (9-12) 1-5 (the number of steps back) 
-% prev. stim, respectively. The coefficients of the addiotional 
+% prev. stim, respectively. The coefficients of the additional 
 % 5-back model perceptual decision model that includes only prev. choices 
 % (and not prev. stimuli) can be found under the 
-% 'decision_model_5_choices_coeff' feild in the results file, such that: 
+% 'decision_model_5_choices_coeff' field in the results file, such that: 
 % (1) general % bias, (2) current stimulus, (3-8) 1-5 prev. choices, 
 % respectively.
 %-------------------------------------------------------------------------%
-
+ 
 for cond = 1:2
     for group = 1:2
         if cond == 1 && group == 1
@@ -59,7 +59,7 @@ for cond = 1:2
             % calculate mean response time:
             if ~isempty(sub_data)
                 sub_res.rt_mean = mean(sub_data.rt);
-
+ 
                 % calculate correct answers ratio:
                 % for all stim:
                 sub_res.corr_score_all = mean(sub_data.corr);
@@ -69,31 +69,31 @@ for cond = 1:2
                 % for test stim only:
                 test_ind = find(sub_data.test_stim == 1);
                 sub_res.corr_score_tests = mean(sub_data.corr(test_ind));
-
+ 
                 % PSE calculation:
-
+ 
                 % create a mat with the needed info. From left to right - 
                 % priors' type, stimulus location, participant's response, 
                 % is it a test stimulus, stimulus number within a trial):
                 data_mat = [sub_data.prior_type sub_data.loc_deg sub_data.ans...
                     sub_data.test_stim sub_data.stim_num];
-
+ 
                 % use only test stimuli:
                 left_resp_ind = find(data_mat(:,3) == -1);
                 data_mat(left_resp_ind,3) = 0;
                 test_ind = find(data_mat(:,4) == 1);
                 data_4PSE_test = data_mat(test_ind,:);
-
+ 
                 %divide according to prior's type (right/left):
                 right_ind = find(data_4PSE_test(:,1) == 1);
                 left_ind = find(data_4PSE_test(:,1) == -1);
                 data_4PSE_right = data_4PSE_test(right_ind,:);
                 data_4PSE_left = data_4PSE_test(left_ind,:);
-
+ 
                 % sort trials according to stim location:
                 data_4PSE_right = sortrows(data_4PSE_right,2);
                 data_4PSE_left = sortrows(data_4PSE_left,2);
-
+ 
                 % find unique location values:
                 right_locs = unique(data_4PSE_right(:,2));
                 left_locs = unique(data_4PSE_left(:,2));
@@ -102,7 +102,7 @@ for cond = 1:2
                 % create the input for the psignifit toolbox:
                 % (1)intensity (=location) (2) number of rightward responses for this intensity
                 % (3)number of trials with this intensity 
-
+ 
                 % right:
                 num_trials_right = zeros(size(right_locs));
                 num_rightward_right = zeros(size(right_locs));
@@ -122,21 +122,21 @@ for cond = 1:2
                     num_rightward_left(loc) = sum(data_4PSE_left(loc_index_left,3));
                 end
                 pfit_input_left = [left_locs num_rightward_left num_trials_left];
-
+ 
                 % make sure that the psignifit-master is installed and is in your
-                % matlab path:
-
-                % clculate psychometric curve - right priors:
+                % Matlab path:
+ 
+                % calculate psychometric curve - right priors:
                 pfit_input = pfit_input_right;
                 options.sigmoidName = 'norm';
                 options.expType = 'equalAsymptote';
                 result = psignifit(pfit_input_right,options);
                 result_orig = getStandardParameters(result);
-
-                % retrive right PSE:
+ 
+                % retrieve right PSE:
                 sub_res.pfit_data.miu_right = result_orig(1);
                 sub_res.pfit_data.sig_right = result_orig(2);
-
+ 
                 % calculate Goodness-of-fit - pseudo-r-squared calculation - right:
                 % calculate the deviance: 
                 [devianceResiduals, deviance_right, samples_deviance, samples_devianceResiduals]...
@@ -156,18 +156,18 @@ for cond = 1:2
                 devianceResiduals_right = -2*sign(pMeasured_right - pPred_right).*(loglikelihoodMeasured_right - loglikelihoodPred_right);
                 deviance_null_right = sum(abs(devianceResiduals_right));
                 sub_res.pseudo_r_right =(deviance_null_right - deviance_right)/deviance_null_right;
-
+ 
                 % calculate psychometric curve - left priors:
                 pfit_input = pfit_input_left;
                 options.sigmoidName = 'norm';
                 options.expType = 'equalAsymptote';
                 result = psignifit(pfit_input_left,options);
                 result_orig = getStandardParameters(result);
-
+ 
                 % retrive left PSE:
                 sub_res.pfit_data.miu_left = result_orig(1);
                 sub_res.pfit_data.sig_left = result_orig(2);
-
+ 
                 % calculate Goodness-of-fit - pseudo-r-squared calculation - left
                 [devianceResiduals, deviance_left, samples_deviance, samples_devianceResiduals] = getDeviance(result,'');
                 % calculate the null deviance (based on the getDeviance function from psignifit):
@@ -184,12 +184,12 @@ for cond = 1:2
                 devianceResiduals_left = -2*sign(pMeasured_left - pPred_left).*(loglikelihoodMeasured_left - loglikelihoodPred_left);
                 deviance_null_left = sum(abs(devianceResiduals_left));
                 sub_res.pseudo_r_left =(deviance_null_left - deviance_left)/deviance_null_left;
-
+ 
                 % calculate delta PSE:
                 sub_res.delta_PSE = sub_res.pfit_data.miu_left - sub_res.pfit_data.miu_right;
-
+ 
                 % Fit Perceptual decision model:
-
+ 
                 % normalize locations: 
                 norm_loc = data_mat(:,2)/rms(data_mat(:,2)); 
                 % calculate prior inforamtion - stim and choices
@@ -209,11 +209,11 @@ for cond = 1:2
                     prior_choices(stim_ind)= mean(sub_choices(relevant_ind));
                     count_stim = count_stim + curr_prior_num + 1;
                 end
-
+ 
                 test_norm_loc = norm_loc(test_ind);
                 test_sub_choices = sub_choices(test_ind);
                 sub_mat4model = [test_norm_loc prior_choices prior_stim];
-                
+               
                 % Model output coefficients order: (1) general bias, 
                 %(2) current stimulus, (3) prev. choices and (4) prev. stim.
                 [sub_res.decision_model_coeff, dev, stats] = ...
@@ -244,14 +244,14 @@ for cond = 1:2
               [sub_res.decision_model_5_back_coeff, dev_5_back, stats_5_back] = ...
                   glmfit(five_back_mat,curr_c,'binomial','link','logit');
               
-              %5-back choices model:
+              %5-back choices model (without prev. stim):
               five_back_choices_mat = [curr_s p1_c p2_c p3_c p4_c p5_c];
-                
+              
               % Model output coefficients order: (1) general bias, 
-              %(2) current stimulus, (3-8) 1-5 (steps back) prev. choices
+              %(2) current stimulus, (3-8) 1-5 (steps back) prev. choices. 
               [sub_res.decision_model_5_choices_coeff, dev_5_choices, stats_5_choices] = ...
                   glmfit(five_back_choices_mat,curr_c,'binomial','link','logit');
-
+ 
             if cond == 1 && group == 1
                 results.primary.asd(sub).sub_filed = sub_res;
             elseif cond == 1 && group == 2
@@ -264,17 +264,19 @@ for cond = 1:2
         end
     end
 end
-
+ 
 save('loc_res','results');
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-
-
-
-
-
-
-
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
 
 
