@@ -21,6 +21,19 @@ load('loc_data');
 % Test circles were always white, and their color is coded as "0").
 % The PSE calculation is done using the psignifit4 toolbox 
 % (which needs to be downloaded and included in the matlab path).
+% Perceptual decision model coefficients can be found under the
+% 'decision_model_coeff' feild in the results file, such that: (1) general
+% bias, (2) current stimulus, (3) prev. choices and (4) prev. stim.
+% Similarly, 5-back model perceptual decision model coefficients an be 
+% found under the 'decision_model_5_back_coeff' feild in the results file, 
+% such that: (1) general % bias, (2) current stimulus, % (3-8) 1-5 prev. 
+% choices, respectively and (9-12) 1-5 (the number of steps back) 
+% prev. stim, respectively. The coefficients of the addiotional 
+% 5-back model perceptual decision model that includes only prev. choices 
+% (and not prev. stimuli) can be found under the 
+% 'decision_model_5_choices_coeff' feild in the results file, such that: 
+% (1) general % bias, (2) current stimulus, (3-8) 1-5 prev. choices, 
+% respectively.
 %-------------------------------------------------------------------------%
 
 for cond = 1:2
@@ -200,6 +213,9 @@ for cond = 1:2
                 test_norm_loc = norm_loc(test_ind);
                 test_sub_choices = sub_choices(test_ind);
                 sub_mat4model = [test_norm_loc prior_choices prior_stim];
+                
+                % Model output coefficients order: (1) general bias, 
+                %(2) current stimulus, (3) prev. choices and (4) prev. stim.
                 [sub_res.decision_model_coeff, dev, stats] = ...
                     glmfit(sub_mat4model,test_sub_choices,'binomial','link','logit');
             else
@@ -221,14 +237,20 @@ for cond = 1:2
               p5_c = sub_choices(1:end - 5);
                 
               five_back_mat = [curr_s p1_c p2_c p3_c p4_c p5_c p1_s p2_s p3_s p4_s p5_s];
+              
+              % Model output coefficients order: (1) general bias, 
+              %(2) current stimulus, (3-8) 1-5 (steps back) prev. choices 
+              % and (9-12) 1-5 prev. stim.
               [sub_res.decision_model_5_back_coeff, dev_5_back, stats_5_back] = ...
                   glmfit(five_back_mat,curr_c,'binomial','link','logit');
               
               %5-back choices model:
-           
-                five_back_choices_mat = [curr_s p1_c p2_c p3_c p4_c p5_c];
-                [sub_res.decision_model_5_choices_coeff, dev_5_choices, stats_5_choices] = ...
-                    glmfit(five_back_choices_mat,curr_c,'binomial','link','logit');
+              five_back_choices_mat = [curr_s p1_c p2_c p3_c p4_c p5_c];
+                
+              % Model output coefficients order: (1) general bias, 
+              %(2) current stimulus, (3-8) 1-5 (steps back) prev. choices
+              [sub_res.decision_model_5_choices_coeff, dev_5_choices, stats_5_choices] = ...
+                  glmfit(five_back_choices_mat,curr_c,'binomial','link','logit');
 
             if cond == 1 && group == 1
                 results.primary.asd(sub).sub_filed = sub_res;
