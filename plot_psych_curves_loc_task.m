@@ -91,8 +91,8 @@ for cond = 1:2
                     legend([hline_r,hline_l],'Right Priors','Left Priors');
                     hold off
  
-                    % save plot:
-                    saveas(current_fig,[exp_cond,'_',group_name,'_', sub_num],'fig');
+                    % if you wish to save the plots, uncomment the followig line:
+                    % saveas(current_fig,[exp_cond,'_',group_name,'_', sub_num],'fig');
                 end
         end
     end
