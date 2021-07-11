@@ -1,9 +1,13 @@
-# ASD - location discrimination task
-
-
+Full details regarding the data analysis and results of this project can be found in: 
+**Feigin, H., Shalom-Sperber, S., Zachor, D. A., & Zaidel, A. (2021). 
+Increased influence of prior choices on perceptual decisions in autism. Elife, 10, e61595.**
 
 *******************************************************************************************************************************
 
+*******************************************************************************************************************************
+# ASD - location discrimination task
+
+*******************************************************************************************************************************
 
 *******************************************************************************************************************************
 For plotting psychometric curves for each participant (and experimental condition):
